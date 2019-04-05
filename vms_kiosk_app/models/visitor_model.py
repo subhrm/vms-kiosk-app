@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 from vms_kiosk_app import logger
 from vms_kiosk_app.models import FM
-from vms_kiosk_app.utils import sql_utils, image_utils, visitor_utils
+from vms_kiosk_app.utils import sql_utils, image_utils, download_utils
 from sklearn.metrics.pairwise import cosine_similarity
 
 class Visitor_Model:
@@ -13,7 +13,7 @@ class Visitor_Model:
         self.update()
         
     def update(self):
-        names , face_vectors = visitor_utils.get_active_visitor_photos()
+        names , face_vectors = download_utils.get_all_photos()
         self.names = names
         self.vectors = face_vectors
         logger.info("Visitor Model initialized")

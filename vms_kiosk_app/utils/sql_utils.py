@@ -12,7 +12,7 @@ def get_connection():
     try:
         uid = os.environ.get("SQL_SERVER_USER_ID")
         pwd = os.environ.get("SQL_SERVER_USER_PWD")
-        print("user id :", uid, "Password" , pwd)
+        # print("user id :", uid, "Password" , pwd)
         cnx = mysql.connector.connect(host=config.SQL_SERVER_IP,
                                       port=config.SQL_SERVER_PORT,
                                       user=uid,

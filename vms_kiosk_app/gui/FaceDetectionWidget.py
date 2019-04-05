@@ -100,7 +100,7 @@ class FaceDetectionWidget(QtWidgets.QWidget):
 
 
     def get_qimage(self, image: np.ndarray):
-        height, width, colors = image.shape
+        height, width, _ = image.shape
         bytesPerLine = 3 * width
         QImage = QtGui.QImage
 

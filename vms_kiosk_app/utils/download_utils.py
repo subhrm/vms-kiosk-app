@@ -7,7 +7,7 @@ from vms_kiosk_app import logger
 from vms_kiosk_app.models import FM
 
 
-def get_active_visitor_photos():
+def get_all_photos():
     resp1 = sql_utils.get_all_visitor_photos()
     resp2 = sql_utils.get_all_poi_photos()
 
