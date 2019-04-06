@@ -15,6 +15,7 @@ class FaceDetectionWidget(QtWidgets.QWidget):
         self.classifier = cv2.CascadeClassifier(haar_cascade_filepath)
         self.image = QtGui.QImage()
         self._red = (0, 0, 255)
+        self._blue = (255, 0, 0)
         self._green = (0, 255, 0)
         self._yellow = (0, 255, 255)
         self._white = (255, 255, 255)
@@ -48,7 +49,14 @@ class FaceDetectionWidget(QtWidgets.QWidget):
             res = self.vm.find(cropped_faces)
 
             for (x, y, w, h), name in zip(faces, res):
-                color = self._red if name == "" else self._green
+                user_type = list(name.split("-"))[0]
+                color = self._white
+                if user_type == "VIP":
+                    color = self._yellow
+                elif user_type == "Threat":
+                    color = self._red
+                elif user_type == "Missing":
+                    color = self._blue
                 cv2.rectangle(image_data,
                             (x, y),
                             (x+w, y+h),
