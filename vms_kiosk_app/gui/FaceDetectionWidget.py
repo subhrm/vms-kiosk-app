@@ -57,6 +57,8 @@ class FaceDetectionWidget(QtWidgets.QWidget):
                     color = self._red
                 elif user_type == "Missing":
                     color = self._blue
+                elif user_type == "Visitor":
+                    color = self._green
                 cv2.rectangle(image_data,
                             (x, y),
                             (x+w, y+h),
