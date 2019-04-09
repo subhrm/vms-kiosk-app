@@ -3,15 +3,14 @@ import numpy as np
 from PyQt5 import QtCore
 from vms_kiosk_app import logger
 
+from .VideoAnalyser import VideoAnalyser
+
 
 class RecordVideo(QtCore.QObject):
-    image_data = QtCore.pyqtSignal(np.ndarray)
 
-    def __init__(self, camera_port=0, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        self.camera = cv2.VideoCapture(camera_port)
-
-        self.timer = QtCore.QBasicTimer()
+        self.worker = VideoAnalyser()
         self.started = False
 
     def set_button(self, btn):
@@ -19,18 +18,10 @@ class RecordVideo(QtCore.QObject):
 
     def start_recording(self, e):
         if not self.started:
-            self.timer.start(0, self)
             self.started = True
             self.btn.setText("STOP")
+            self.worker.start()
         else:
             self.started = False
-            self.timer.stop()
+            self.worker.terminate()
             self.btn.setText("START")
-
-    def timerEvent(self, event):
-        if (event.timerId() != self.timer.timerId()):
-            return
-
-        read, data = self.camera.read()
-        if read:
-            self.image_data.emit(data)

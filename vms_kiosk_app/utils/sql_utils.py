@@ -31,7 +31,7 @@ def get_all_visitor_photos():
 
     logger.info("Trying to fetch all visitor images")
 
-
+    resp = []
 
     try:
         cnx = get_connection()
@@ -46,7 +46,6 @@ def get_all_visitor_photos():
         '''
         cursor.execute(query)
         res = cursor.fetchall()
-        resp = []
         for row in res:
             resp.append(row)
         cursor.close()
@@ -57,6 +56,7 @@ def get_all_visitor_photos():
 
     return resp
 
+
 def get_all_poi_photos():
     '''
         Get photos of all persons of interest
@@ -64,7 +64,7 @@ def get_all_poi_photos():
 
     logger.info("Trying to fetch all poi images")
 
-
+    resp = []
 
     try:
         cnx = get_connection()
@@ -78,7 +78,7 @@ def get_all_poi_photos():
         '''
         cursor.execute(query)
         res = cursor.fetchall()
-        resp = []
+
         for row in res:
             resp.append(row)
         cursor.close()
