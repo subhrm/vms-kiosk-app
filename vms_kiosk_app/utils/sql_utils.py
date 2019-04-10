@@ -10,14 +10,13 @@ def get_connection():
     cnx = None
 
     try:
-        uid = os.environ.get("SQL_SERVER_USER_ID")
-        pwd = os.environ.get("SQL_SERVER_USER_PWD")
-        # print("user id :", uid, "Password" , pwd)
         cnx = mysql.connector.connect(host=config.SQL_SERVER_IP,
                                       port=config.SQL_SERVER_PORT,
-                                      user=uid,
-                                      password=pwd,
-                                      database=config.DB_NAME)
+                                      user=config.SQL_SERVER_USER_PWD,
+                                      password=config.SQL_SERVER_USER_PWD,
+                                      database=config.DB_NAME,
+                                      ssl_disabled=True
+                                      )
     except Exception:
         logger.exception("SQL Connection failed")
 
@@ -35,24 +34,24 @@ def get_all_visitor_photos():
 
     try:
         cnx = get_connection()
-        cursor = cnx.cursor()
-        query = '''
-            select v.name, i.image_data
-            from visitor v,
-                images i
-            where v.status = 1 
-            and v.actual_photo is not null
-            and  v.actual_photo = i.image_id;
-        '''
-        cursor.execute(query)
-        res = cursor.fetchall()
-        for row in res:
-            resp.append(row)
-        cursor.close()
-        cnx.close()
-    except Exception as ex:
-        logger.exception(str(ex))
-        #raise Exception("Some thing went wrong")
+        if cnx:
+            cursor = cnx.cursor()
+            query = '''
+                select v.name, i.image_data
+                from visitor v,
+                    images i
+                where v.status = 1 
+                and v.actual_photo is not null
+                and  v.actual_photo = i.image_id;
+            '''
+            cursor.execute(query)
+            res = cursor.fetchall()
+            for row in res:
+                resp.append(row)
+            cursor.close()
+            cnx.close()
+    except Exception:
+        logger.exception("Could not get visitor photos")
 
     return resp
 
@@ -68,23 +67,23 @@ def get_all_poi_photos():
 
     try:
         cnx = get_connection()
-        cursor = cnx.cursor()
-        query = '''
-            select p.type, p.name, i.image_data
-            from person_of_interest p,
-                images i
-            where p.image_id is not null
-            and  p.image_id = i.image_id;
-        '''
-        cursor.execute(query)
-        res = cursor.fetchall()
+        if cnx:
+            cursor = cnx.cursor()
+            query = '''
+                select p.type, p.name, i.image_data
+                from person_of_interest p,
+                    images i
+                where p.image_id is not null
+                and  p.image_id = i.image_id;
+            '''
+            cursor.execute(query)
+            res = cursor.fetchall()
 
-        for row in res:
-            resp.append(row)
-        cursor.close()
-        cnx.close()
-    except Exception as ex:
-        logger.exception(str(ex))
-        #raise Exception("Some thing went wrong")
+            for row in res:
+                resp.append(row)
+            cursor.close()
+            cnx.close()
+    except Exception:
+        logger.exception("Could not get PoI photos")
 
     return resp
