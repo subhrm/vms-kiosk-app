@@ -24,3 +24,5 @@ class Config():
         self.SQL_SERVER_USER_PWD = os.environ.get("SQL_SERVER_USER_PWD")
 
         self.IMAGE_DIR = "./data/photos"
+
+        self.UPDATE_INTERVAL = 1000

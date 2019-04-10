@@ -31,7 +31,7 @@ class Visitor_Model:
         names, face_vectors = download_utils.get_all_photos()
         self.names = names
         self.vectors = face_vectors
-        logger.info("Visitor Model initialized")
+        logger.info("Photos refreshed")
 
     def detect_faces(self, image: np.ndarray):
         # haarclassifiers work better in black and white
@@ -80,7 +80,7 @@ class Visitor_Model:
             self.update()
             self.count = 0
 
-        if self.count % 5 == 0:
+        if self.count % 7 == 0:
             self.faces = self.detect_faces(frame)
             cropped_faces = [frame[y:y+h, x:x+w]
                              for x, y, w, h in self.faces]
@@ -88,7 +88,7 @@ class Visitor_Model:
 
         self.count += 1
 
-        if self.count == 399:
+        if self.count == config.UPDATE_INTERVAL:
             self.count = -1
             return self.schedule_update(frame)
 

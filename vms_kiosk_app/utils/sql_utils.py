@@ -12,7 +12,7 @@ def get_connection():
     try:
         cnx = mysql.connector.connect(host=config.SQL_SERVER_IP,
                                       port=config.SQL_SERVER_PORT,
-                                      user=config.SQL_SERVER_USER_PWD,
+                                      user=config.SQL_SERVER_USER_ID,
                                       password=config.SQL_SERVER_USER_PWD,
                                       database=config.DB_NAME,
                                       ssl_disabled=True
